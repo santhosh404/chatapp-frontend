@@ -1,0 +1,16 @@
+.default-style {
+    background: #F0FFF4 !important;
+    transition: ease 0.4s all;
+
+}
+
+.default-style:hover {
+    background: #ccfbdb !important;
+    transition: ease 0.8s all;
+}
+
+.default-style:focus {
+    border: 2px solid #68D391 !important;
+    background: #fff !important;
+    transition: ease 0.5s all;
+}
