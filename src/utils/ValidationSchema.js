@@ -5,7 +5,7 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/
 
 
 export const signInValidationSchema = Yup.object().shape({
-    phoneNumber: Yup.string().email('Please enter the valid phone number').required('Phone number is required'),
+    phoneNumber: Yup.string().required('Phone Number is required').matches(phoneRegExp, 'Please enter a valid phone number (Eg. 8844221134)'),
     password: Yup.string().required('Password is required'),
 })
 

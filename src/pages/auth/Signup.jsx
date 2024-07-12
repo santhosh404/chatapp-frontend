@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Card, Input } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import CustomInput from '../../components/reusable/CustomInput/CustomInput'
 import { useFormik } from 'formik';
 import { signUpValidationSchema } from '../../utils/ValidationSchema';
+import { signUp } from '../../services/AuthServices';
+import { CommonContextProvider } from '../../context/CommonContext';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  //context usage
+  const { toast } = useContext(CommonContextProvider)
 
   const formik = useFormik({
     initialValues: {
@@ -16,11 +22,32 @@ export default function Signup() {
       password: ''
     },
     validationSchema: signUpValidationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const response = await signUp(values);
+        if (response) {
+          setLoading(false);
+          sessionStorage.setItem('userInfo', JSON.stringify(response.data.user));
+          sessionStorage.setItem('token', JSON.stringify(response.data.token));
+          toast({
+            title: response.message,
+            status:'success',
+            position: 'top-center'
+          });
+          navigate('/chat')
+        }
+      }
+      catch (err) {
+        setLoading(false);
+        toast({
+          title: err.response.data.message,
+          description: err.response.data.data.error,
+          status: 'error',
+          position: 'top-center'
+        });
+      }
 
-      // Handle form submission
-      console.log(values)
-      // navigate('/home')
     }
   })
 
@@ -104,7 +131,7 @@ export default function Signup() {
                     )
                   }
                 </div>
-                <Button type='submit' className='w-full' variant={'outline'} colorScheme='green'>Sign Up</Button>
+                <Button isLoading={loading} type='submit' className='w-full' variant={'outline'} colorScheme='green'>Sign Up</Button>
               </div>
             </form>
             <div className='flex justify-center items-center mt-5 w-full'>
