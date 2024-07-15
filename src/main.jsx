@@ -8,10 +8,10 @@ import { CommonContext } from './context/CommonContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ChakraProvider>
-    <CommonContext>
-      <BrowserRouter>
+    <BrowserRouter>
+      <CommonContext>
         <App />
-      </BrowserRouter>
-    </CommonContext>
+      </CommonContext>
+    </BrowserRouter>
   </ChakraProvider>
 )

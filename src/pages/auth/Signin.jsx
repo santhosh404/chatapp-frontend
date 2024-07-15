@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import CustomInput from '../../components/reusable/CustomInput/CustomInput'
@@ -27,7 +27,7 @@ export default function Signin() {
         if (response) {
           setLoading(false);
           sessionStorage.setItem('userInfo', JSON.stringify(response.data.user));
-          sessionStorage.setItem('token', JSON.stringify(response.data.token));
+          sessionStorage.setItem('token', response.data.token);
           toast({
             title: response.message,
             status: 'success',
@@ -48,6 +48,14 @@ export default function Signin() {
     }
   })
 
+  useEffect(() => {
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+
+    if (userInfo) {
+      navigate('/chat')
+    }
+
+  }, [navigate])
 
   return (
     <>
