@@ -12,7 +12,7 @@ import { IoSend } from "react-icons/io5";
 import io from "socket.io-client";
 
 
-const ENDPOINT = 'http://localhost:4000';
+const ENDPOINT = 'https://ping-kar.onrender.com';
 var socket, selectedChatCompare
 
 export default function ChatWindow() {
