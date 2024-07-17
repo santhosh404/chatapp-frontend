@@ -87,6 +87,12 @@ export default function ChatWindow() {
     }
 
     useEffect(() => {
+        const user = JSON.parse(sessionStorage.getItem('userInfo'));
+        setUser(user);
+        handleGetUserChats();
+    }, [setUser]);
+
+    useEffect(() => {
         socket = io(ENDPOINT)
         socket.emit("setup", JSON.parse(sessionStorage.getItem('userInfo')));
         socket.on("connection", (message) => {
@@ -97,7 +103,7 @@ export default function ChatWindow() {
     }, [])
 
     useEffect(() => {
-        if (selectedChat._id) {
+        if (selectedChat && selectedChat._id) {
             getMessageOfChat();
             selectedChatCompare = selectedChat;
         }
@@ -106,8 +112,6 @@ export default function ChatWindow() {
     useEffect(() => {
         socket.on("new message received", (newMessageReceived) => {
 
-            console.log("New message received:", newMessageReceived);
-            console.log(selectedChatCompare)
             if (selectedChatCompare && selectedChatCompare._id === newMessageReceived.chat._id) {
                 console.log("inside", newMessageReceived)
                 setMessages([...messages, newMessageReceived]);
@@ -115,16 +119,12 @@ export default function ChatWindow() {
         })
     })
 
-    useEffect(() => {
-        const user = JSON.parse(sessionStorage.getItem('userInfo'));
-        setUser(user);
-        handleGetUserChats();
-    }, [setUser]);
+   
 
-    if (!user || Object.keys(selectedChat).length === 0) {
+    if (!user || !selectedChat || Object.keys(selectedChat).length === 0) {
         return (
             <div className='w-full flex justify-center mt-5'>
-                <Spinner />
+                No chats Found
             </div>
         );
     }
@@ -156,7 +156,7 @@ export default function ChatWindow() {
     return (
         <div className="w-3/4 flex flex-col">
             {
-                selectedChat ? (
+                Object.keys(selectedChat).length > 0 ? (
                     <>
                         <Flex className="p-4 bg-green-100 border-b border-green-200">
                             <div className='flex items-center gap-3'>
