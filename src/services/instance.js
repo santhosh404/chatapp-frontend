@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export const instance = axios.create({
-    baseURL: 'http://localhost:4000/api/v1', 
+    baseURL: 'https://ping-kar.onrender.com/api/v1', 
     headers: {
         'Content-Type': 'application/json',
         timeout : 30000,
