@@ -90,7 +90,7 @@ export default function ChatWindow() {
         const user = JSON.parse(sessionStorage.getItem('userInfo'));
         setUser(user);
         handleGetUserChats();
-    }, [setUser]);
+    }, []);
 
     useEffect(() => {
         socket = io(ENDPOINT)
